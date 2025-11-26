@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -y -qq \
     python3-pip \
+    gcc-arm-none-eabi \
     rsync \
     dirmngr \
     build-essential \
