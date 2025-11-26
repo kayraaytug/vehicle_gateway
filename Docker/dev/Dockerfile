@@ -4,11 +4,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -y -qq \
     python3-pip \
-    python3-kconfiglib \
-    python3-jinja2 \
-    python3-jsonschema \
-    python3-future \
-    gcc-arm-none-eabi \
     rsync \
     dirmngr \
     build-essential \
@@ -16,9 +11,9 @@ RUN apt-get update \
     wget \
     curl \
     gnupg2 \
-    qtbase5-dev \
     cmake  \
     git \
+    socat \
     && apt-get clean
 
 RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
@@ -29,7 +24,7 @@ RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pk
 
 RUN pip3 install vcstool pyros-genmsg
 
-RUN mkdir -p /home/vehicle_gateway/src && cd /home/vehicle_gateway && git clone https://github.com/osrf/vehicle_gateway src/vehicle_gateway --depth 1 && \
+RUN mkdir -p /home/vehicle_gateway/src && cd /home/vehicle_gateway && git clone https://github.com/kayraaytug/vehicle_gateway.git src/vehicle_gateway --depth 1 && \
     vcs import src < src/vehicle_gateway/dependencies.repos
 
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
@@ -45,14 +40,7 @@ RUN apt-get update && apt-get upgrade -q -y && \
 RUN rosdep init && \
   rosdep update && \
   cd /home/vehicle_gateway && \
-  rosdep install --from-paths ./ -i -y --rosdistro humble --ignore-src --skip-keys="gz-transport12 gz-common5 gz-math7 gz-msgs9 gz-gui7 gz-cmake3 gz-sim7 zenohc gz-transport7 gz-plugin2"
-
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && \
-    echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> $HOME/.profile
-
-ENV PATH="/root/.cargo/bin:${PATH}"
-
-RUN rustup update
+  rosdep install --from-paths ./ -i -y --rosdistro humble --ignore-src --skip-keys="gz-transport12 gz-common5 gz-math7 gz-msgs9 gz-gui7 gz-cmake3 gz-sim7 gz-transport7 gz-plugin2"
 
 RUN cd /home/vehicle_gateway && . /opt/ros/humble/local_setup.sh && colcon build --merge-install --event-handlers console_direct+ --cmake-args -DBUILD_TESTING=0
 
