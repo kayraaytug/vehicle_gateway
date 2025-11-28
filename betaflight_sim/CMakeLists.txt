@@ -15,7 +15,7 @@ externalproject_add(betaflight-firmware
   GIT_REPOSITORY
     https://github.com/betaflight/betaflight
   GIT_TAG
-    4.5-maintenance
+    4.5.3
   INSTALL_COMMAND
     mkdir -p ${CMAKE_INSTALL_PREFIX}/share/betaflight_sim/bin/ &&
     cp ./obj/main/betaflight_SITL.elf ${CMAKE_INSTALL_PREFIX}/share/betaflight_sim/bin/
