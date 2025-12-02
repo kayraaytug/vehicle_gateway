@@ -19,7 +19,7 @@ externalproject_add(betaflight-firmware
   INSTALL_COMMAND
     mkdir -p ${CMAKE_INSTALL_PREFIX}/share/betaflight_sim/bin/ &&
     cp ./obj/main/betaflight_SITL.elf ${CMAKE_INSTALL_PREFIX}/share/betaflight_sim/bin/
-  BUILD_COMMAND pwd && ${MAKE_EXECUTABLE} arm_sdk_install && ${MAKE_EXECUTABLE} TARGET=SITL -j
+  BUILD_COMMAND pwd && ${MAKE_EXECUTABLE} arm_sdk_install && ${MAKE_EXECUTABLE} TARGET=SITL EXTRA_FLAGS="-DUSE_ALTITUDE_HOLD" -j$(nproc)
   BUILD_IN_SOURCE ON
   CONFIGURE_COMMAND ""
 )
